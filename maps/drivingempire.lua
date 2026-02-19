@@ -1,6 +1,10 @@
--- ======= AUTOFARM LOGIC MODULE =======
--- File terpisah yang bisa di-load dari GitHub
+--[[
+    2 Tab UI with AutoFarm Integration
+    Tab 1: AutoFarm Controls
+    Tab 2: Settings (kosong untuk sekarang)
+]]
 
+-- ======= AUTOFARM LOGIC MODULE =======
 local AutoFarmLogic = {}
 
 -- Services
@@ -229,4 +233,85 @@ end)
 
 print("✅ AutoFarm Logic loaded!")
 
-return AutoFarmLogic
+-- ======= WINDUI SETUP =======
+-- Load WindUI Library
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
+-- Create Window
+local Window = WindUI:CreateWindow({
+    Title = "AutoFarm Hub",
+    Icon = "rbxassetid://10723415903",
+    Author = "Your Name",
+    Folder = "AutoFarmConfig",
+    Size = UDim2.fromOffset(400, 360),
+    KeySystem = false,
+    Transparent = false,
+    Theme = "Dark",
+    SideBarWidth = 170,
+})
+
+local Tab1 = Window:Tab({
+    Title = "AutoFarm Panels",
+    Icon = "car",
+})
+
+-- Create Tab 2 - AutoFarm
+local Tab2 = Window:Tab({
+    Title = "AutoFarm",
+    Icon = "zap",
+})
+
+-- Create Tab 3 - Settings
+local Tab3 = Window:Tab({
+    Title = "Settings", 
+    Icon = "settings",
+})
+
+local Tab1Section = Tab1:Section({
+    Title = "AutoFarm Panels"
+})
+
+-- ====================
+-- TAB 2: AUTOFARM
+-- ====================
+
+local Tab2Section = Tab2:Section({
+    Title = "AutoFarm Controls"
+})
+
+-- Speed variable
+local currentSpeed = 710
+
+-- Start/Stop Toggle
+Tab2Section:Toggle({
+    Title = "Start AutoFarm",
+    Default = false,
+    Callback = function(toggled)
+        if toggled then
+            if not AutoFarmLogic.IsRunning then
+                AutoFarmLogic:SetSpeed(currentSpeed)
+                AutoFarmLogic:Start(Vector3.new(0, 10, 0))
+                WindUI:Notification({
+                    Title = "AutoFarm Started",
+                    Description = "Auto-drive is running...",
+                    Duration = 2
+                })
+            end
+        else
+            if AutoFarmLogic.IsRunning then
+                AutoFarmLogic:StopAutoDrive()
+                WindUI:Notification({
+                    Title = "AutoFarm Stopped",
+                    Description = "Auto-drive stopped.",
+                    Duration = 2
+                })
+            end
+        end
+    end
+})
+
+for _,v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do
+    v:Disable()
+end
+
+print("AutoFarm UI loaded successfully!")

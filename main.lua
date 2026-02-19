@@ -3,7 +3,7 @@
 -- ============================================
 
 -- Load GameList dari GitHub
-local Games = loadstring(game:HttpGet("https://raw.githubusercontent.com/slophisticated/Spouse/main/gamelist.lua"))()
+local Games = loadstring(game:HttpGet("https://raw.githubusercontent.com/slophisticated/twin/main/gamelist.lua"))()
 
 -- Cek Game ID saat ini
 local currentGameId = game.GameId
